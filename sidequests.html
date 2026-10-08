@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidequests, Anand Krishna</title>
+  <meta name="description" content="Branding, coursework and experiments by Anand Krishna.">
+  <meta name="theme-color" content="#EFEFEB">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="t-paper" id="top">
+  <a class="skip" href="#content">Skip to content</a>
+  <header data-nav></header>
+  <main id="content">
+    <section class="ctitle wrap">
+      <h1 class="ctitle__h" data-fit-box><span class="ctitle__t" data-fit="shrink" data-reserve="48">Sidequests</span><span class="sup" data-count></span></h1>
+      <div class="ctitle__row grid">
+        <p class="ctitle__sum">Optional work, off the main path. Branding, coursework and experiments: smaller, faster, and usually more fun to make.</p>
+      </div>
+      <div class="sq-bar">
+        <div class="sq-filters" data-filters role="group" aria-label="Filter by category"></div>
+        <div class="sq-views" data-views role="group" aria-label="View">
+          <button type="button" aria-pressed="true" data-view="grid">Grid</button>
+          <button type="button" aria-pressed="false" data-view="list">List</button>
+        </div>
+      </div>
+    </section>
+    <section class="wrap sq-wrap" aria-label="Sidequests">
+      <ul class="sq-grid" data-grid></ul>
+      <ul class="sq-list" data-list hidden></ul>
+    </section>
+  </main>
+  <div data-footer></div>
+
+  <dialog class="sqd" data-dialog aria-label="Sidequest details">
+    <button type="button" class="sqd__close" data-dialog-close>Close</button>
+    <div data-dialog-body></div>
+  </dialog>
+
+  <script type="module" src="assets/js/sidequests.js"></script>
+</body>
+</html>
