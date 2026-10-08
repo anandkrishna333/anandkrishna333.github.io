@@ -26,25 +26,66 @@ hoverPreview({
 
 document.querySelector('[data-footer]').outerHTML = footer({ note: 15 });
 
-/* ---------- Things to know: deck shuffle, no repeats until all seen ---------- */
+/* ---------- Things to know: a deck of lines with a progress counter ----------
+   Line 01 always opens. Each round shows every line once in random order,
+   the counter shows how many this visitor has seen, and after the last one
+   the link reads "Start over". */
 const line = document.querySelector('[data-fact]');
 const btn = document.querySelector('[data-shuffle]');
+const digits = [...document.querySelectorAll('[data-digit]')];
+const srCount = document.querySelector('[data-fact-sr]');
+const N = FACTS.length;
+document.querySelector('[data-fact-total]').textContent = String(N).padStart(2, '0');
+const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 let current = 0;
-let deck = [];
-const refill = () => {
-  deck = FACTS.map((_, i) => i).filter((i) => i !== current);
-  for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
-};
-line.textContent = FACTS[0];
-btn.addEventListener('click', async () => {
-  if (!deck.length) refill();
-  current = deck.pop();
-  if (reduceMotion || !line.animate) { line.textContent = FACTS[current]; return; }
-  btn.disabled = true;
-  await line.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-60%)', opacity: 0 }], { duration: 110, easing: 'ease-in' }).finished;
+let seen = 1;
+let deck = shuffle(FACTS.map((_, i) => i).filter((i) => i !== 0));
+
+// Odometer counter: only digits that change roll. Up on Next, down on reset.
+function rollCount(n, dir) {
+  const s = String(n).padStart(2, '0');
+  srCount.textContent = String(n);
+  digits.forEach((d, i) => {
+    if (d.textContent === s[i]) return;
+    if (reduceMotion || !d.animate) { d.textContent = s[i]; return; }
+    d.getAnimations().forEach((a) => a.cancel());
+    d.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-100 * dir}%)` }], { duration: 110, easing: 'ease-in', fill: 'forwards' });
+    setTimeout(() => {
+      d.getAnimations().forEach((a) => a.cancel());
+      d.textContent = s[i];
+      d.animate([{ transform: `translateY(${100 * dir}%)` }, { transform: 'translateY(0)' }], { duration: 180, easing: 'cubic-bezier(.2,.7,.2,1)' });
+    }, 110);
+  });
+}
+
+const render = () => {
   line.textContent = FACTS[current];
-  await line.animate([{ transform: 'translateY(60%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 180, easing: 'cubic-bezier(.2,.7,.2,1)' }).finished;
-  btn.disabled = false;
+  btn.textContent = seen === N ? 'Start over' : 'Next';
+};
+render();
+
+let busy = false;
+btn.addEventListener('click', () => {
+  if (busy) return;
+  const reset = seen === N;
+  if (reset) {
+    deck = shuffle(FACTS.map((_, i) => i));
+    if (deck[deck.length - 1] === current) [deck[0], deck[deck.length - 1]] = [deck[deck.length - 1], deck[0]];
+    seen = 0;
+  }
+  current = deck.pop();
+  seen += 1;
+  rollCount(seen, reset ? -1 : 1);
+  if (reduceMotion || !line.animate) { render(); return; }
+  // The swap runs on a timer, so a stalled animation can never lock the button.
+  busy = true;
+  line.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-60%)', opacity: 0 }], { duration: 110, easing: 'ease-in', fill: 'forwards' });
+  setTimeout(() => {
+    line.getAnimations().forEach((a) => a.cancel());
+    render();
+    line.animate([{ transform: 'translateY(60%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: 180, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
+    busy = false;
+  }, 110);
 });
 
 initCommon({ current: 'Work' });
