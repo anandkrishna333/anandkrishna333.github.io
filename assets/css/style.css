@@ -62,8 +62,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero__row { margin-top: 56px; align-items: start; }
 .hero__intro { grid-column: 7 / span 6; grid-row: 1; font-size: clamp(24px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.02em; line-height: 1.08; max-width: 15em; }
 .facts { grid-column: 1 / span 5; grid-row: 1; padding-top: 6px; }
-.facts__label { font-size: 13px; }
+.facts__label { font-size: 13px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.facts__num { display: inline-flex; vertical-align: bottom; }
+.facts__d { display: inline-block; overflow: hidden; height: 1.3em; }
+.facts__d > span { display: inline-block; }
 .facts__win { overflow: hidden; margin: 10px 0 12px; min-height: 2.36em; font-size: 24px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .facts__line { font-size: 24px; font-weight: 500; letter-spacing: -.008em; line-height: 1.18; max-width: 19em; }
 .facts__btn { font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; padding: 14px 0; margin: -14px 0; }
 .facts__btn:disabled { cursor: default; }
