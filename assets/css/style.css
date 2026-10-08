@@ -69,9 +69,19 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .facts__win { overflow: hidden; margin: 10px 0 12px; min-height: 2.36em; font-size: 24px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .facts__line { font-size: 24px; font-weight: 500; letter-spacing: -.008em; line-height: 1.18; max-width: 19em; }
-.facts__btn { font-size: 15px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; padding: 12px 0; margin: -12px 0; transition: color 160ms ease-out; }
-.facts__btn:hover { color: var(--accent); }
+.facts__btn { display: inline-block; font-size: 15px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; padding: 12px 0; margin: -12px 0; transform-origin: 0 50%; transition: transform 320ms cubic-bezier(.34, 1.56, .64, 1); }
+/* Grows with a slight spring on hover; settles back quicker on leave. */
+.facts__btn:focus-visible { transform: scale(1.18); }
+@media (hover: hover) {
+  .facts__btn:hover { transform: scale(1.18); }
+  .facts__btn:not(:hover):not(:focus-visible) { transition-duration: 200ms; transition-timing-function: cubic-bezier(.2, .7, .2, 1); }
+}
+.facts__btn:active { transform: scale(1.08); transition-duration: 90ms; }
 .facts__btn:focus-visible { outline-color: #000; }
+@media (prefers-reduced-motion: reduce) {
+  .facts__btn { transition: none; }
+  .facts__btn:hover, .facts__btn:focus-visible { transform: none; text-decoration-thickness: 3px; }
+}
 
 /* ---------- index ---------- */
 .index { padding-top: 120px; padding-bottom: 220px; }
