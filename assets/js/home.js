@@ -69,12 +69,14 @@ btn.addEventListener('click', () => {
   if (busy) return;
   const reset = seen === N;
   if (reset) {
-    deck = shuffle(FACTS.map((_, i) => i));
-    if (deck[deck.length - 1] === current) [deck[0], deck[deck.length - 1]] = [deck[deck.length - 1], deck[0]];
-    seen = 0;
+    // Every round opens on line 01 (the orange one), then the rest in random order.
+    current = 0;
+    seen = 1;
+    deck = shuffle(FACTS.map((_, i) => i).filter((i) => i !== 0));
+  } else {
+    current = deck.pop();
+    seen += 1;
   }
-  current = deck.pop();
-  seen += 1;
   rollCount(seen, reset ? -1 : 1);
   if (reduceMotion || !line.animate) { render(); return; }
   // The swap runs on a timer, so a stalled animation can never lock the button.
