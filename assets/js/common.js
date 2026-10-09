@@ -29,7 +29,9 @@ export function nav({ ctx, current }) {
 }
 
 export function linksRow(cls = '') {
-  return LINKS.map(([l, h]) => `<a class="${cls}" href="${h}">${l}</a>`).join('');
+  // Profiles open in a new tab so visitors keep the portfolio open; email stays as a normal link.
+  const ext = (h) => (h.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '');
+  return LINKS.map(([l, h]) => `<a class="${cls}" href="${h}"${ext(h)}>${l}</a>`).join('');
 }
 
 export function footer({ note } = {}) {

@@ -1,12 +1,10 @@
 // All site content lives here. Edit text, captions and links in this file.
 
-// TODO: replace with your real address and profile links.
-export const EMAIL = 'hello@example.com';
+export const EMAIL = 'anandkrishna2001@gmail.com';
 export const LINKS = [
   ['Email', `mailto:${EMAIL}`],
-  ['LinkedIn', '#'],
-  ['Instagram', '#'],
-  ['Behance', '#'],
+  ['LinkedIn', 'https://www.linkedin.com/in/anandkrishna16/'],
+  ['Behance', 'https://www.behance.net/anandkrishna16'],
 ];
 
 // Hero shuffle. Line 01 always shows first; the rest come in random order
@@ -14,12 +12,10 @@ export const LINKS = [
 export const FACTS = [
   'Has strong opinions about the colour orange. You may have noticed.',
   'Stays for the credits to see who did the colour grade.',
-  'Can’t leave a cursor alone. Hover a project and see.',
   'Once spent a whole weekend on a 2 mm fillet. Worth it.',
   'Always asks for one more take. Usually uses the first.',
   'Pet peeve: subtitles that vanish before you finish reading them.',
-  'Judges apps by how they say no.',
-  'Doesn’t believe in guilty pleasures. What’s the guilt about?',
+  'Can’t book a train ticket without noticing how the app was designed.',
   'Can’t walk past a good hinge without opening it twice.',
   'Still thinks Rose could have moved over for Jack.',
 ];
@@ -131,9 +127,9 @@ export const PROJECTS = [
   },
   {
     slug: 'nuoheat', n: '03', title: 'NuoHeat', theme: 'paper',
-    field: 'Localized induction ironing', disc: 'Industrial design',
+    field: 'Induction ironing system', disc: 'Industrial design',
     summary: 'An induction iron that heats only the part of the soleplate touching fabric, so it is ready almost instantly and wastes less energy.',
-    meta: [['Field', 'Localized induction ironing'], ['Discipline', 'Industrial design'], ['Role', 'Research, form, engineering, CMF'], ['Output', 'Working prototype, CAD, renders']],
+    meta: [['Field', 'Induction ironing system'], ['Discipline', 'Industrial design'], ['Role', 'Research, form, engineering, CMF'], ['Output', 'Working prototype, CAD, renders']],
     preview: ['NuoHeat: side profile', 'NuoHeat: exploded view', 'NuoHeat: foam models'],
     hero: { ops: [['row', [[0, 8, 820, 'Hero: NuoHeat on black, side profile', null, 0], [8, 4, 520, 'Detail: soleplate coil zones', null, 300]]]] },
     chapters: [
