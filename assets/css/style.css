@@ -58,7 +58,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- hero ---------- */
 .hero { padding-bottom: 140px; }
 .hero__name { display: inline-block; white-space: nowrap; font-size: 180px; font-weight: 700; letter-spacing: -.045em; line-height: .86; margin-top: 72px; }
-.hero__name .l { display: inline; }
+.hero__name .l { display: inline-block; }
+.hero__name .ch { display: inline-block; transform-origin: 0 100%; }
+/* Entrance: letters rise from below their own baseline, so clip only the bottom edge. */
+.hero__name.is-entering .l { clip-path: inset(-60% -15% 0 -15%); }
+.intro :is(.hero__name, .hero .nav, .hero__intro, .facts) { opacity: 0; }
 .hero__row { margin-top: 56px; align-items: start; }
 .hero__intro { grid-column: 7 / span 6; grid-row: 1; font-size: clamp(24px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.02em; line-height: 1.08; max-width: 15em; }
 .facts { grid-column: 1 / span 5; grid-row: 1; padding-top: 6px; }
@@ -106,7 +110,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .has-cursor .row a, .has-cursor .sql button { cursor: none; }
 
 /* floating preview + cursor */
-.pv { position: fixed; left: 0; top: 0; width: clamp(200px, 23.6vw, 340px); aspect-ratio: 34 / 43; pointer-events: none; z-index: 40; opacity: 0; transition: opacity 160ms ease-out; will-change: transform; }
+.pv { position: fixed; left: 0; top: 0; width: clamp(160px, 16.7vw, 240px); aspect-ratio: 34 / 43; pointer-events: none; z-index: 40; opacity: 0; transition: opacity 160ms ease-out; will-change: transform; }
 .pv.is-on { opacity: 1; }
 .pv--fixed { left: auto; right: 22%; top: 50%; transform: translateY(-50%); }
 .pv__f { position: absolute; inset: 0; background: #1A1A1A; opacity: 0; }
