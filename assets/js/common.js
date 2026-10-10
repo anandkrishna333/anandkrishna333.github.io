@@ -1,4 +1,4 @@
-import { EMAIL, LINKS, FOOTNOTES, FOOTNOTE_TOTAL } from './data.js';
+import { EMAIL, LINKS, FOOTNOTES, FOOTNOTE_TOTAL, UPDATED } from './data.js';
 
 export const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -18,11 +18,15 @@ export function footnote(n) {
     `<span class="fn__label">Fact ${pad2(n)}</span><p class="fn__text">${esc(FOOTNOTES[n])}</p></div>`;
 }
 
+// The site is still growing; this says so without making a fuss.
+export const wip = () => `<span class="wip"><span class="wip__dot" aria-hidden="true"></span>Work in progress · Last updated ${esc(UPDATED)}</span>`;
+
 export function nav({ ctx, current }) {
-  const links = [['Work', 'index.html#work'], ['Sidequests', 'sidequests.html'], ['Info', 'index.html#info'], ['Contact', 'index.html#contact']];
+  // Sidequests is hidden until it has real work in it (the page still exists at sidequests.html).
+  const links = [['Work', 'index.html#work'], ['Info', 'index.html#info'], ['Contact', 'index.html#contact']];
   return `<nav class="nav" aria-label="Main">
     <a class="nav__name" href="index.html">Anand Krishna</a>
-    <span class="nav__ctx">${esc(ctx)}</span>
+    <span class="nav__ctx">${ctx === 'wip' ? wip() : esc(ctx)}</span>
     <div class="nav__links">${links.map(([l, h]) => `<a href="${h}"${l === current ? ' aria-current="page"' : ''}>${l}</a>`).join('')}</div>
     <button class="nav__menu" type="button" aria-haspopup="dialog" data-menu-open>Menu</button>
   </nav>`;
@@ -61,10 +65,10 @@ export function footer({ note } = {}) {
       ${note ? `<div class="footer__note">${footnote(note)}</div>` : ''}
       <p class="footer__q" data-cta-label>Got a project, a role or an odd idea?</p>
       <button class="footer__cta" type="button" data-copy-email aria-label="Copy my email address">
-        <span data-fit="fill"><span class="l">Write</span> <span class="l">to me</span></span>
+        <span><span class="l">Write</span> <span class="l">to me</span></span>
       </button>
       <div class="footer__bottom grid">
-        <span class="footer__copy">© 2026 Anand Krishna</span>
+        <span class="footer__copy">© 2026 Anand Krishna<span class="footer__wip">${wip()}</span></span>
         <div class="footer__icons">${iconLinks()}</div>
         <a class="footer__top" href="#top">Back to top</a>
       </div>
@@ -117,7 +121,7 @@ function initMenu(current) {
   const d = document.createElement('dialog');
   d.className = 'menu t-ink';
   d.setAttribute('aria-label', 'Menu');
-  const items = [['Work', 'index.html#work', '5'], ['Sidequests', 'sidequests.html', '12'], ['Info', 'index.html#info', ''], ['Contact', 'index.html#contact', '']];
+  const items = [['Work', 'index.html#work', '5'], ['Info', 'index.html#info', ''], ['Contact', 'index.html#contact', '']];
   d.innerHTML = `<div class="menu__top"><span class="nav__name">Anand Krishna</span><button type="button" class="menu__close" data-menu-close>Close</button></div>
     <ul class="menu__list">${items.map(([l, h, n]) => `<li><a href="${h}" class="${l === current ? 'is-current' : ''}">${l}${n ? `<sup>${n}</sup>` : ''}</a></li>`).join('')}</ul>
     <div class="menu__foot"><p class="mute" data-fn-count></p><div class="menu__links">${iconLinks()}</div></div>`;

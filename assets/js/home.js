@@ -1,8 +1,10 @@
 import { FACTS, PROJECTS, FOOTNOTE_TOTAL } from './data.js';
 import { initCommon, nav, footer, ph, esc, reduceMotion } from './common.js';
 import { hoverPreview } from './preview.js';
+import { me, initMe } from './me.js';
 
-document.querySelector('[data-nav]').innerHTML = nav({ ctx: 'Selected work, 2026', current: 'Work' });
+document.querySelector('[data-nav]').innerHTML = nav({ ctx: 'wip', current: 'Work' });
+document.querySelectorAll('[data-me-slot]').forEach((s) => { s.innerHTML = me(s.dataset.meSlot); });
 
 document.querySelector('[data-index-hook]').textContent =
   `${FOOTNOTE_TOTAL} small facts are hidden in these pages, from medieval medicine to Jaws.`;
@@ -11,8 +13,8 @@ const list = document.querySelector('[data-index]');
 list.innerHTML = PROJECTS.map((p) => `
   <li class="row" data-slug="${p.slug}">
     <a href="project.html?p=${p.slug}">
-      <span class="row__title"><span class="row__t" style="view-transition-name:t-${p.slug}">${esc(p.title)}</span><span class="row__num">${p.n}</span></span>
-      <span class="row__meta"><span class="row__field">${esc(p.field)}</span><span class="row__disc">${esc(p.disc)}</span></span>
+      <span class="row__title"><span class="row__t" style="view-transition-name:t-${p.slug}">${esc(p.title)}</span><span class="row__num">${p.n}</span>${p.soon ? '<span class="row__soon"><span class="wip__dot" aria-hidden="true"></span>In progress</span>' : ''}</span>
+      <span class="row__meta"><span class="row__field">${esc(p.field)}</span><span class="row__disc">${esc(p.disc)}</span>${p.soon ? '<span class="row__soon row__soon--m"><span class="wip__dot" aria-hidden="true"></span>In progress</span>' : ''}</span>
       <span class="row__inline">${p.hero && p.hero.src
         ? `<img src="${p.hero.src}" alt="" loading="lazy" decoding="async">`
         : ph(p.preview[0], '16/9')}</span>
@@ -205,6 +207,8 @@ function runCurtain(onLift) {
 }
 
 initCommon({ current: 'Work' });
+initMe();
+
 // Start after the web font has loaded and the name has been sized to the page width.
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
   if (curtain && document.documentElement.classList.contains('curtain')) runCurtain(() => requestAnimationFrame(playIntro));

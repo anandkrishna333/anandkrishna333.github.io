@@ -1,6 +1,8 @@
 // All site content lives here. Edit text, captions and links in this file.
 
 export const EMAIL = 'anandkrishna2001@gmail.com';
+// "Still being built" note in the nav and footer. Change the date when you publish an update.
+export const UPDATED = 'Oct 2026';
 // [label, url, icon]. Icons come from the Tabler outline set (see ICONS in common.js).
 export const LINKS = [
   ['Email', `mailto:${EMAIL}`, 'mail'],
@@ -114,7 +116,7 @@ export const PROJECTS = [
     ],
   },
   {
-    slug: 'loom', n: '02', title: 'Loom', theme: 'white',
+    slug: 'loom', soon: true, n: '02', title: 'Loom', theme: 'white',
     field: 'Creative Discovery', disc: 'UI/UX',
     summary: 'A discovery app for creative work, where you browse by mood, material and process instead of by follower count.',
     meta: [['Field', 'Creative Discovery'], ['Discipline', 'UI/UX'], ['Role', 'Research · Interaction · UI'], ['Platform', 'iOS · Web']],
@@ -223,7 +225,7 @@ export const PROJECTS = [
     ],
   },
   {
-    slug: 'prakambanam', n: '04', title: 'Prakambanam', theme: 'ink',
+    slug: 'prakambanam', soon: true, n: '04', title: 'Prakambanam', theme: 'ink',
     field: 'Onam Theme Film', disc: 'Film · Creative Direction · Editing',
     summary: 'A theme film for Onam, built on the sound, colour and rhythm of the festival.',
     meta: [['Format', 'Theme Film'], ['Occasion', 'Onam'], ['Role', 'Creative Director'], ['Also', 'Director · Editor']],
@@ -258,7 +260,7 @@ export const PROJECTS = [
     ],
   },
   {
-    slug: 'the-seek', n: '05', title: 'The Seek', theme: 'ink', overlayTitle: true,
+    slug: 'the-seek', soon: true, n: '05', title: 'The Seek', theme: 'ink', overlayTitle: true,
     field: 'Ishanya ’26 Theme Film', disc: 'Film · Direction · Editing',
     summary: 'The theme film for Ishanya ’26, about the search that starts before you know what you are looking for.',
     meta: [['Format', 'Theme Film'], ['Event', 'Ishanya ’26'], ['Role', 'Director · Editor'], ['Team', 'Wider Creative Crew, Credited Below']],

@@ -1,5 +1,6 @@
 import { PROJECTS } from './data.js';
 import { initCommon, nav, ph, footnote, esc, sp, icon, reduceMotion } from './common.js';
+import { me, initMe } from './me.js';
 
 const slug = new URLSearchParams(location.search).get('p');
 const idx = Math.max(0, PROJECTS.findIndex((p) => p.slug === slug));
@@ -14,7 +15,7 @@ document.querySelector('meta[name="theme-color"]').content = dark ? '#000000' : 
 const img = ({ src, w, h, alt }, extra = '') =>
   `<img src="${src}" width="${w}" height="${h}" alt="${esc(alt)}" decoding="async" ${extra || 'loading="lazy"'}>`;
 const behanceLink = (cls) => p.behance
-  ? `<a class="cs-cta ${cls}" href="${p.behance}" target="_blank" rel="noopener noreferrer">View full case study on Behance${icon('arrow-up-right')}<span class="sr"> (opens in a new tab)</span></a>`
+  ? `<a class="cs-cta ${cls}" data-me-look href="${p.behance}" target="_blank" rel="noopener noreferrer">View full case study on Behance${icon('arrow-up-right')}<span class="sr"> (opens in a new tab)</span></a>`
   : '';
 const num = (i) => String(i + 1).padStart(2, '0');
 
@@ -84,7 +85,7 @@ function glimpse() {
     <section class="cs-end wrap" aria-labelledby="cs-end-h">
       <h2 class="cs-end__h" id="cs-end-h">That was the short version.</h2>
       <p class="cs-end__p">The full case study has the research, every iteration and the reasoning behind each decision.</p>
-      ${behanceLink('cs-cta--end')}
+      ${p.behance ? `<div class="cs-end__go">${me('cs')}${behanceLink('cs-cta--end')}</div>` : ''}
     </section>`;
 }
 // Section rail: click to jump, and the mark follows the section you are reading.
@@ -234,7 +235,11 @@ function chapters() {
         <div class="wrap ch-grid grid">${heroBlocks.map((b, i) => b.html.replace('%R%', i + 1)).join('')}</div>
       </section>`;
   }
-  return top + p.chapters.map(chapter).join('');
+  // Unfinished projects say so up front; the grey boxes below are placeholders for what's coming.
+  const soon = p.soon
+    ? `<p class="soon-note wrap"><span class="wip"><span class="wip__dot" aria-hidden="true"></span>Case study in progress. The boxes below are placeholders for what's coming.</span></p>`
+    : '';
+  return soon + top + p.chapters.map(chapter).join('');
 }
 
 /* ---------- next project ---------- */
@@ -265,3 +270,4 @@ document.querySelector('[data-page]').innerHTML = (p.sections ? glimpse() : chap
 
 initCommon({ current: 'Work' });
 initRail();
+initMe();
