@@ -23,6 +23,8 @@
       setTimeout(function () { d.classList.remove('intro', 'curtain', 'curtain-leaving'); }, seen ? 2500 : 5000);
     })();
   </script>
+  <!-- Render-blocking, so the project rows exist at first paint and the title can morph back from a project page. -->
+  <script type="module" src="assets/js/home.js" blocking="render"></script>
 </head>
 <body class="t-paper" id="top">
   <div class="curtain-screen" aria-hidden="true"><p class="curtain__words"><span data-word>Designer</span></p></div>
@@ -57,7 +59,7 @@
       <div class="wrap grid">
         <h2 class="about__head">Different mediums. Connected ideas.</h2>
         <div class="about__portrait">
-          <img src="assets/img/about/portrait.jpg" alt="Anand Krishna in clear-framed glasses, smiling with his eyes half closed in the sun, hills blurred behind him" width="660" height="800" loading="lazy" decoding="async">
+          <img src="assets/img/about/portrait.jpg" alt="Anand Krishna in sunglasses and a dark jacket, smiling in a wide grass valley with hills behind him" width="660" height="800" loading="lazy" decoding="async">
         </div>
         <div class="about__me">
           <div data-me-slot="about"></div>
@@ -75,7 +77,5 @@
   </main>
 
   <div data-footer></div>
-
-  <script type="module" src="assets/js/home.js"></script>
 </body>
 </html>

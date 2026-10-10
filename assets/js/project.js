@@ -1,6 +1,10 @@
-import { PROJECTS } from './data.js';
+﻿import { PROJECTS } from './data.js';
 import { initCommon, nav, ph, footnote, esc, sp, icon, reduceMotion } from './common.js';
 import { me, initMe } from './me.js';
+
+// This script blocks first paint (see project.html) so the title can morph in from the home page.
+// Give the typeface a moment to load first, so the title is measured and painted in Instrument Sans.
+if (document.fonts) await Promise.race([document.fonts.load('600 16px "Instrument Sans"'), new Promise((r) => setTimeout(r, 1200))]);
 
 const slug = new URLSearchParams(location.search).get('p');
 const idx = Math.max(0, PROJECTS.findIndex((p) => p.slug === slug));
@@ -15,7 +19,7 @@ document.querySelector('meta[name="theme-color"]').content = dark ? '#000000' : 
 const img = ({ src, w, h, alt }, extra = '') =>
   `<img src="${src}" width="${w}" height="${h}" alt="${esc(alt)}" decoding="async" ${extra || 'loading="lazy"'}>`;
 const behanceLink = (cls) => p.behance
-  ? `<a class="cs-cta ${cls}" data-me-look href="${p.behance}" target="_blank" rel="noopener noreferrer">View full case study on Behance${icon('arrow-up-right')}<span class="sr"> (opens in a new tab)</span></a>`
+  ? `<a class="cs-cta ${cls}" data-me-look href="${p.behance}" target="_blank" rel="noopener noreferrer">View full case study on <strong class="cs-cta__brand">Behance</strong>${icon('arrow-up-right')}<span class="sr"> (opens in a new tab)</span></a>`
   : '';
 const num = (i) => String(i + 1).padStart(2, '0');
 
@@ -86,13 +90,15 @@ function glimpse() {
       <h2 class="cs-end__h" id="cs-end-h">That was the short version.</h2>
       <p class="cs-end__p">The full case study has the research, every iteration and the reasoning behind each decision.</p>
       ${p.behance ? `<div class="cs-end__go">${me('cs')}${behanceLink('cs-cta--end')}</div>` : ''}
-    </section>`;
+    </section>
+    <button class="to-top" type="button" aria-label="Back to top" hidden>${icon('arrow-up')}</button>`;
 }
 // Section rail: click to jump, and the mark follows the section you are reading.
 function initRail() {
   const rail = document.querySelector('.cs-rail');
   if (!rail) return;
-  const links = [...rail.querySelectorAll('a')];
+  const links = [...rail.querySelectorAll('a[href^="#s-"]')];
+  const topBtn = document.querySelector('.to-top');
   const secs = links.map((a) => document.querySelector(a.getAttribute('href')));
   const mark = rail.querySelector('.cs-rail__mark');
   const narrow = matchMedia('(max-width: 767px)');
@@ -111,15 +117,65 @@ function initRail() {
       mark.style.transform = `translateY(${a.offsetTop + a.offsetHeight / 2 - 1}px)`;
     }
   };
-  const setActive = (i) => {
+  // The newly active item pops: it swells a little, then settles back.
+  const pop = (a, cls) => {
+    if (reduceMotion || !a) return;
+    a.classList.remove('pop', 'pop--end');
+    void a.offsetWidth;
+    a.classList.add(cls);
+  };
+  const setActive = (i, cls = 'pop') => {
     if (i === active) return;
     active = i;
     links.forEach((a, j) => (j === i ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
     rail.classList.toggle('has-active', i >= 0);
+    pop(links[i], cls);
     place();
   };
+
+  // A jump sends the line through every item on the way, each one popping as it passes.
+  // Scroll tracking is paused until the page lands, so it cannot fight the sweep.
+  let locked = false, lockTimer = 0, sweepTimer = 0;
+  const unlock = () => { clearTimeout(lockTimer); if (!locked) return; locked = false; rail.classList.remove('is-sweeping'); onScroll(); };
+  // The lock lifts once scrolling has been still for a moment, i.e. the page has landed.
+  const hold = (ms) => { clearTimeout(lockTimer); lockTimer = setTimeout(unlock, ms); };
+  const sweep = (path, last) => {
+    clearInterval(sweepTimer);
+    if (reduceMotion) { setActive(last); return; }
+    locked = true;
+    hold(path.length * 95 + 500);
+    rail.classList.add('is-sweeping');
+    let n = 0;
+    sweepTimer = setInterval(() => {
+      if (n >= path.length) {
+        clearInterval(sweepTimer);
+        setActive(last, 'pop--end');
+        return;
+      }
+      setActive(path[n++]);
+    }, 95);
+  };
+  const go = (j) => {
+    if (j < 0 || j >= secs.length) return;
+    secs[j].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    history.replaceState(null, '', links[j].getAttribute('href'));
+    secs[j].querySelector('.cs-h').focus({ preventScroll: true });
+    if (j === active) { pop(links[j], 'pop--end'); return; }
+    const step = j > active ? 1 : -1, path = [];
+    for (let k = active + step; k !== j; k += step) path.push(k);
+    sweep(path, j);
+  };
+  const goTop = () => {
+    scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    history.replaceState(null, '', location.pathname + location.search);
+    const path = [];
+    for (let k = active - 1; k >= 0; k--) path.push(k);
+    sweep(path, -1);
+  };
+
   let ticking = false;
   const onScroll = () => {
+    if (locked) { hold(160); return; }
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
@@ -132,12 +188,26 @@ function initRail() {
       setActive(i);
     });
   };
-  links.forEach((a, j) => a.addEventListener('click', (e) => {
-    e.preventDefault();
-    secs[j].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-    history.replaceState(null, '', a.getAttribute('href'));
-    secs[j].querySelector('.cs-h').focus({ preventScroll: true });
-  }));
+  links.forEach((a, j) => a.addEventListener('click', (e) => { e.preventDefault(); go(j); }));
+  // Back to top lives in the bottom-right corner, where the reader is already scrolling.
+  topBtn.addEventListener('click', goTop);
+  const showTop = () => {
+    const on = scrollY > innerHeight * 0.9;
+    if (on === topBtn.classList.contains('is-on')) return;
+    if (on) topBtn.hidden = false;
+    requestAnimationFrame(() => topBtn.classList.toggle('is-on', on));
+  };
+  topBtn.addEventListener('transitionend', () => { if (!topBtn.classList.contains('is-on')) topBtn.hidden = true; });
+  addEventListener('scroll', showTop, { passive: true });
+  showTop();
+  // Keys: 1 to 5 jump to that section, J / K step to the next or previous one.
+  addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+    const t = e.target;
+    if (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    const d = /^[1-9]$/.test(e.key) ? +e.key - 1 : e.key === 'j' ? active + 1 : e.key === 'k' ? active - 1 : -1;
+    if (d >= 0 && d < secs.length) { e.preventDefault(); go(d); }
+  });
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', place);
   narrow.addEventListener('change', place);

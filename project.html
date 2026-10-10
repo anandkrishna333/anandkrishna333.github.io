@@ -9,11 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Render-blocking, so the page is built before it first paints: the title can then morph in from the home page. -->
+  <script type="module" src="assets/js/project.js" blocking="render"></script>
 </head>
 <body class="t-paper" id="top">
   <a class="skip" href="#content">Skip to content</a>
   <header data-nav></header>
   <main id="content" data-page></main>
-  <script type="module" src="assets/js/project.js"></script>
 </body>
 </html>
