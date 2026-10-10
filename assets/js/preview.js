@@ -55,7 +55,9 @@ export function hoverPreview({ list, rowSelector, frames, label, dim = true }) {
 
   function show(row) {
     const fr = frames(row);
-    pv.innerHTML = fr.map((c, n) => `<div class="pv__f${n ? '' : ' on'}"><span class="ph__cap">${esc(c)}</span></div>`).join('');
+    // A frame is either a placeholder caption (string) or a real image ({ src, cap }).
+    pv.innerHTML = fr.map((c, n) => `<div class="pv__f${n ? '' : ' on'}${c.src ? ' pv__f--img' : ''}">${
+      c.src ? `<img src="${c.src}" alt="" decoding="async">` : `<span class="ph__cap">${esc(c)}</span>`}</div>`).join('');
     cur.querySelector('.cur__label').textContent = label(row);
     i = 0;
     clearInterval(timer);

@@ -12,14 +12,20 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script>
     // Hold the hero back until the entrance animation starts (no flash of the final state).
-    // If scripts fail for any reason, it shows anyway after 2.5 s.
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('intro');
-      setTimeout(function () { document.documentElement.classList.remove('intro'); }, 2500);
-    }
+    // The black opening curtain plays once per visit. If scripts fail, everything shows anyway.
+    (function () {
+      var d = document.documentElement;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var seen = false;
+      try { seen = sessionStorage.getItem('ak-curtain') === '1'; } catch (e) {}
+      d.classList.add('intro');
+      if (!seen) d.classList.add('curtain');
+      setTimeout(function () { d.classList.remove('intro', 'curtain', 'curtain-leaving'); }, seen ? 2500 : 5000);
+    })();
   </script>
 </head>
 <body class="t-paper" id="top">
+  <div class="curtain-screen" aria-hidden="true"><p class="curtain__words"><span data-word>Designer</span></p></div>
   <a class="skip" href="#work">Skip to work</a>
 
   <header class="hero t-orange">
@@ -55,7 +61,7 @@
           <p>Industrial design taught me that people use things with their hands, in bad light, while thinking about something else. Film taught me pacing, and that most things get better in the edit. Both show up in how I design interfaces.</p>
           <p>I share work early, ask a lot of questions and don’t get attached to my first idea. It’s rarely the best one.</p>
         </div>
-        <div class="about__col about__col--1"><h3>What I do</h3><p>UI/UX design<br>Interaction design<br>Product design<br>Industrial design<br>Creative direction</p></div>
+        <div class="about__col about__col--1"><h3>What I do</h3><p>UI/UX Design<br>Interaction Design<br>Product Design<br>Industrial Design<br>Creative Direction</p></div>
         <div class="about__col about__col--2"><h3>Elsewhere</h3><p><a href="https://www.linkedin.com/in/anandkrishna16/" target="_blank" rel="noopener noreferrer">LinkedIn</a><br><a href="https://www.behance.net/anandkrishna16" target="_blank" rel="noopener noreferrer">Behance</a></p></div>
         <div class="about__col about__col--3"><h3>Résumé</h3><p><a href="#">Download CV (PDF)</a></p></div>
       </div>

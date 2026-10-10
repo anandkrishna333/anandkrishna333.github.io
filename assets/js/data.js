@@ -1,10 +1,11 @@
 // All site content lives here. Edit text, captions and links in this file.
 
 export const EMAIL = 'anandkrishna2001@gmail.com';
+// [label, url, icon]. Icons come from the Tabler outline set (see ICONS in common.js).
 export const LINKS = [
-  ['Email', `mailto:${EMAIL}`],
-  ['LinkedIn', 'https://www.linkedin.com/in/anandkrishna16/'],
-  ['Behance', 'https://www.behance.net/anandkrishna16'],
+  ['Email', `mailto:${EMAIL}`, 'mail'],
+  ['LinkedIn', 'https://www.linkedin.com/in/anandkrishna16/', 'linkedin'],
+  ['Behance', 'https://www.behance.net/anandkrishna16', 'behance'],
 ];
 
 // Hero shuffle. Line 01 always shows first; the rest come in random order
@@ -28,14 +29,14 @@ export const FOOTNOTES = {
   5: 'Pull-to-refresh came from one developer, Loren Brichter, in Tweetie 2 (2009). Now it’s in almost every app. Small gestures travel.',
   6: '“The details are not the details. They make the design.” Charles Eames.',
   7: 'Early flat irons were called sad irons, “sad” once meaning heavy. You heated two on the stove and swapped them as one cooled.',
-  8: 'Henry Dreyfuss designed around two drawn figures, Joe and Josephine, carrying every measurement of an average body. Foam grips are the low-tech version.',
+  8: 'Henry Dreyfuss designed around two drawn figures, Joe and Josephine, carrying every measurement of an average body. A good handle starts from the hand, not the heater.',
   9: 'Dieter Rams’ Braun SK 4 radio was nicknamed Snow White’s Coffin. Good industrial design survives a mean nickname.',
   10: 'A panchari melam builds through five stages, each faster than the one before. The film borrows that shape.',
   11: 'Walter Murch ranks emotion above story and rhythm when choosing a cut. Cut 3 won on emotion.',
   12: 'The Kuleshov effect: the same face reads as hungry, grieving or in love, depending on the shot before it.',
   13: 'The mechanical shark in Jaws kept breaking, so Spielberg showed it less, and the film got scarier. We never show where the light comes from.',
   14: 'For Barry Lyndon, Kubrick lit scenes with candles and shot on Zeiss lenses first made for NASA. We had one practical lamp and a lot of patience.',
-  15: 'The Xerox Star team tested their icons on real people before it shipped in 1981. Still the best advice I know: show it to someone early.',
+  15: 'Ray Tomlinson picked the @ for the first network email in 1971 because it was the one key nobody used in their name.',
 };
 export const FOOTNOTE_TOTAL = 15;
 
@@ -52,46 +53,71 @@ export const FOOTNOTE_TOTAL = 15;
 export const PROJECTS = [
   {
     slug: 'urosense', n: '01', title: 'UroSense', theme: 'paper',
-    field: 'Connected healthcare', disc: 'Product + UI/UX',
-    summary: 'A home urine-sensing device and companion app that turns an everyday routine into an early signal for kidney and urinary health.',
-    meta: [['Field', 'Connected healthcare'], ['Discipline', 'Product + UI/UX'], ['Role', 'Product design, interaction, UI'], ['Deliverables', 'Device, mobile app, clinician view']],
-    preview: ['UroSense: device on the rim', 'UroSense: app, today', 'UroSense: clinician view'],
-    hero: { ops: [['full', 860, 'Hero: device mounted on a toilet rim, soft morning light']] },
-    chapters: [
-      { n: '01', label: 'Problem', fn: 1, ops: [
-        ['statement', 'Urinary and kidney problems are often caught late. Testing means a clinic visit, a sample cup and days of waiting, so most people simply don’t.'],
-        ['para', 'People only test when something already feels wrong. The goal was to make monitoring passive: no strips, no cups, no reading colour charts in a bathroom.', 3, 4],
-        ['row', [[3, 4, 520, 'Context: current at-home test strips', 'What people use today. Twelve colours, read by eye, under bathroom lighting.'], [8, 4, 360, 'Interview photo, anonymised', 'Conversations with patients and two nephrologists.', 160]]],
-      ] },
-      { n: '02', label: 'Thinking', fn: 2, ops: [
-        ['statement', 'Three things I kept coming back to.', 40, 3, 6],
-        ['cols', [[3, 3, 'Nobody wants to look at it', 'The device has to disappear. No screens, no lights that ask for attention.'], [6, 3, 'A number is not an answer', 'Every result needs a next step a person can act on today.'], [9, 3, 'Two users, not one', 'The patient lives with it; the clinician needs a trend, not a stream.']]],
-        ['row', [[0, 7, 480, 'Sketchbook: placement and grip studies'], [7, 5, 480, 'Journey map, patient and clinician']]],
-      ] },
-      { n: '03', label: 'Process', ops: [
-        ['para', 'Physical and digital ran in parallel. Foam and 3D prints answered where the device lives; flows and wireframes answered what it says.', 3, 5],
-        ['row', [[0, 3, 300, 'Foam models', 'Foam models'], [3, 3, 300, 'Sensor bench test', 'Sensor bench test'], [6, 3, 300, 'User flows', 'User flows'], [9, 3, 300, 'Wireframes', 'Wireframes']]],
-      ] },
-      { n: '04', label: 'Iteration', fn: 3, ops: [
-        ['statement', 'Three housings before one felt right.', 40, 3, 6],
-        ['row', [[0, 4, 400, 'v1 render', 'v1  Clip-on. Easy to fit, too visible.'], [4, 4, 400, 'v2 render', 'v2  Under-seat. Hidden, but needed tools to install.'], [8, 4, 400, 'v3 render', 'v3  Rim-mounted. One hand, no tools, out of sight.']]],
-      ] },
-      { n: '05', label: 'Design', fill: 'ink', ops: [
-        ['row', [[0, 6, 680, 'Device render, three-quarter view'], [6, 2, 560, 'App: today', null, 120], [8, 2, 560, 'App: trend', null, 60], [10, 2, 560, 'App: next step', null, 0]]],
-        ['para', 'A quiet weekly summary replaces daily alerts. When something changes, the app explains it in plain words and suggests one action.', 6, 5],
-        ['full', 760, 'Clinician view, patient trends over 90 days'],
-      ] },
-      { n: '06', label: 'Outcome', ops: [
-        ['statement', 'A working prototype of the device and app, tested with patients at home.'],
-        ['list', [['What worked', 'Passive sensing removed the moment of friction people described most.'], ['What didn’t', 'Early alert copy felt alarming. Rewritten with clinicians in a second round.'], ['Next', 'Longer home trial and a pharmacy-facing version of the clinician view.']]],
-      ] },
+    field: 'Connected Healthcare', disc: 'Industrial Design · UI/UX',
+    behance: 'https://www.behance.net/gallery/255958821/UroSense-Connected-Healthcare-System',
+    summary: 'A discreet wearable and companion app for incontinence monitoring, designed to support timely alerts and more independent care.',
+    // Fields set to null are hidden on the site. TODO(Anand): fill in Tools.
+    glance: [
+      ['Domain', 'Industrial Design · UI/UX · Interaction Design'],
+      ['Role', 'Product Designer'],
+      ['Timeline', '4 Weeks'],
+      ['Tools', null],
+    ],
+    hero: { src: 'assets/img/urosense/hero.jpg', w: 1616, h: 909, alt: 'The urosense wearable, a soft grey pebble, beside a phone showing the app’s calm home screen.' },
+    preview: [
+      { src: 'assets/img/urosense/hover-1.jpg', cap: 'The wearable' },
+      { src: 'assets/img/urosense/hover-2.jpg', cap: 'The companion app' },
+      { src: 'assets/img/urosense/hover-3.jpg', cap: 'Caregiver app and ward board' },
+    ],
+    sections: [
+      {
+        id: 'context', label: 'Context', title: 'Making care more discreet and independent.', fn: 1,
+        body: ['Managing incontinence can involve frequent checks, uncertainty and dependence on caregivers. UroSense explores how a connected wearable and digital interface can make monitoring more discreet while supporting timely care and personal dignity.'],
+      },
+      {
+        id: 'problem', label: 'Problem', title: 'How might we make monitoring simpler without compromising dignity?',
+        body: ['Users and caregivers need a reliable way to understand when attention is needed without constant manual checks. The challenge was to connect physical sensing, timely alerts and clear information into an experience that feels simple, reassuring and respectful.'],
+      },
+      {
+        id: 'process', label: 'Process', title: 'Designing across physical and digital touchpoints.', fn: 3,
+        body: ['I explored the product through research, wearable development and interface design, considering the needs of both users and caregivers.'],
+        rows: [
+          ['Research', 'Understand user needs, care routines and privacy concerns.', { src: 'assets/img/urosense/journey.jpg', w: 1300, h: 700, alt: 'Journey map of a day for Neetha, today and with Sense, from morning to night.' }],
+          ['Industrial Design', 'Explore a discreet, wearable form.', { src: 'assets/img/urosense/form-matrix.jpg', w: 1290, h: 720, alt: 'Early sketch of the wearable beside a table comparing four ways to wear it.' }],
+          ['UX & Interaction', 'Develop user flows, alerts, logs and caregiver workflows.', { src: 'assets/img/urosense/nudge-flow.jpg', w: 1290, h: 720, alt: 'Flow diagram of the nudge loop, from a gentle buzz through her answer to a caregiver alert.' }],
+          ['UI Design', 'Create status indicators, patient dashboards and supporting screens.', { src: 'assets/img/urosense/hierarchy.jpg', w: 520, h: 690, narrow: true, alt: 'The calm home screen with its parts labelled: who and when, how she is at a glance, one optional action, and the same four places.' }],
+          ['Prototyping', 'Refine the physical and digital experience through iterative design.', { src: 'assets/img/urosense/core-loop.jpg', w: 1290, h: 720, alt: 'Three home screen states: all calm, break time soon, and a check-in asking if she made it in time.' }],
+        ],
+      },
+      {
+        id: 'solution', label: 'Solution', title: 'One connected system. Clearer care.', fn: 2,
+        body: ['UroSense brings together a wearable device, companion app and caregiver dashboard to support discreet monitoring and timely responses.'],
+        bullets: [
+          'A wearable designed around discretion and everyday use.',
+          'Clear status indicators and notifications.',
+          'Logs to review monitoring history.',
+          'A multi-patient dashboard for caregivers.',
+          'Privacy, consent and data-transfer considerations.',
+        ],
+        after: ['The experience connects physical monitoring with accessible information, helping users and caregivers understand what needs attention.'],
+        figs: [
+          { src: 'assets/img/urosense/three-people.jpg', w: 1600, h: 691, alt: 'The wearable, the wearer’s app, the family caregiver’s app and the care-home ward board, side by side.', cap: 'One system, three people.' },
+          { src: 'assets/img/urosense/system-map.jpg', w: 1300, h: 720, alt: 'System map: the wearable, her phone and a consent gate, with the family app, web dashboard, doctor and care-home ward beyond it.', cap: 'How the device, her app and everyone else connect, through a single consent gate.' },
+        ],
+      },
+      {
+        id: 'outcome', label: 'Outcome', title: 'A connected healthcare concept built around dignity.',
+        body: ['UroSense brought industrial design, UI/UX and interaction design together in a unified product concept. The project explored how thoughtful physical form, clear information and coordinated caregiver workflows could support a more considerate monitoring experience.'],
+        takeaway: ['Healthcare technology should do more than collect information. It should make everyday care easier to understand, less intrusive and more respectful.'],
+        note: 'UroSense is a design concept. It has not been built, clinically validated or tested with users at home.',
+      },
     ],
   },
   {
     slug: 'loom', n: '02', title: 'Loom', theme: 'white',
-    field: 'Creative discovery', disc: 'UI/UX',
+    field: 'Creative Discovery', disc: 'UI/UX',
     summary: 'A discovery app for creative work, where you browse by mood, material and process instead of by follower count.',
-    meta: [['Field', 'Creative discovery'], ['Discipline', 'UI/UX'], ['Role', 'Research, interaction, UI'], ['Platform', 'iOS and web']],
+    meta: [['Field', 'Creative Discovery'], ['Discipline', 'UI/UX'], ['Role', 'Research · Interaction · UI'], ['Platform', 'iOS · Web']],
     preview: ['Loom: home feed', 'Loom: material filter', 'Loom: board'],
     hero: { fill: 'paper', ops: [['row', [[0, 2, 470, 'Screen: onboarding', null, 160], [2, 3, 640, 'Screen: home feed', null, 0], [5, 2, 470, 'Screen: board', null, 90], [7, 3, 640, 'Screen: search by material', null, 40], [10, 2, 470, 'Screen: profile', null, 200]]]] },
     chapters: [
@@ -127,44 +153,80 @@ export const PROJECTS = [
   },
   {
     slug: 'nuoheat', n: '03', title: 'NuoHeat', theme: 'paper',
-    field: 'Induction ironing system', disc: 'Industrial design',
-    summary: 'An induction iron that heats only the part of the soleplate touching fabric, so it is ready almost instantly and wastes less energy.',
-    meta: [['Field', 'Induction ironing system'], ['Discipline', 'Industrial design'], ['Role', 'Research, form, engineering, CMF'], ['Output', 'Working prototype, CAD, renders']],
-    preview: ['NuoHeat: side profile', 'NuoHeat: exploded view', 'NuoHeat: foam models'],
-    hero: { ops: [['row', [[0, 8, 820, 'Hero: NuoHeat on black, side profile', null, 0], [8, 4, 520, 'Detail: soleplate coil zones', null, 300]]]] },
-    chapters: [
-      { n: '01', label: 'Problem', fn: 7, ops: [
-        ['statement', 'A conventional iron heats its whole soleplate and keeps it hot, even when it is standing still. Most of that energy never touches a shirt.'],
-        ['row', [[3, 3, 360, 'Observation: ironing at home', 'Ironing at home, three households.'], [6, 3, 360, 'Observation: thermal camera', 'Thermal image of a standing iron.'], [9, 3, 360, 'Observation: hand posture', 'Grip and wrist angle over 20 minutes.']]],
-      ] },
-      { n: '02', label: 'Thinking', ops: [
-        ['full', 560, 'Diagram: how localized induction heats only the contact zone'],
-        ['cols', [[3, 3, 'Heat where it touches', 'Coil zones switch on only under fabric contact.'], [6, 3, 'Ready in seconds', 'No waiting for a full plate to warm up.'], [9, 3, 'Safe when set down', 'Lift or rest it and the heat stops.']]],
-      ] },
-      { n: '03', label: 'Process', fn: 8, ops: [
-        ['row', [[0, 2, 220, 'Sketch'], [2, 2, 220, 'Sketch'], [4, 2, 220, 'Sketch'], [6, 2, 220, 'Sketch'], [8, 2, 220, 'Sketch'], [10, 2, 220, 'Sketch']]],
-        ['row', [[0, 6, 480, 'Foam models, grip variations', 'Twelve foam models to find the grip before any electronics.'], [6, 6, 480, 'Coil test rig', 'Coil test rig on the bench.']]],
-      ] },
-      { n: '04', label: 'Iteration', ops: [
-        ['statement', 'Each prototype answered one question.', 40, 3, 6],
-        ['row', [[0, 4, 420, 'P1', 'P1  Does local induction heat fabric evenly?'], [4, 4, 420, 'P2', 'P2  Can the coils fit in a body people want to hold?'], [8, 4, 420, 'P3', 'P3  Does it feel finished enough to trust?']]],
-      ] },
-      { n: '05', label: 'Design', fn: 9, ops: [
-        ['full', 900, 'Exploded view: shell, coil array, sensor layer, soleplate'],
-        ['swatches', [['#E9E7E1', 'Shell, matte warm white'], ['#2E2E2C', 'Grip, soft-touch graphite'], ['#B8BCC2', 'Soleplate, brushed steel'], ['#2B2BFF', 'Indicator, ultramarine']], 3],
-        ['list', [['Soleplate', 'Segmented coil array, only the contact zone heats.'], ['Sensing', 'Contact and motion sensing cut power when the iron is lifted or still.'], ['Form', 'Upright stance with a recessed grip that keeps the wrist neutral.']]],
-      ] },
-      { n: '06', label: 'Outcome', ops: [
-        ['statement', 'A working prototype that heats only where it touches fabric, plus production-intent CAD.'],
-        ['para', 'Next: thermal testing across fabrics and a slimmer coil array.', 3, 5],
-      ] },
+    field: 'Induction Ironing System', disc: 'Industrial Design',
+    behance: 'https://www.behance.net/gallery/255958929/NuoHeat-Induction-Ironing-System',
+    summary: 'An induction-based ironing system that explores localized heating to reduce energy use and ironing time.',
+    // Fields set to null are hidden on the site. TODO(Anand): fill in Tools.
+    glance: [
+      ['Domain', 'Industrial Design · Product Engineering'],
+      ['Role', 'Product Designer'],
+      ['Timeline', '6 Months'],
+      ['Tools', null],
+    ],
+    hero: { src: 'assets/img/nuoheat/hero.jpg', w: 1616, h: 824, alt: 'Render of the 2026 NuoHeat redesign: a slim grey ironing pad with red knobs, and a handle with a red grip.' },
+    preview: [
+      { src: 'assets/img/nuoheat/hover-1.jpg', cap: 'The pad' },
+      { src: 'assets/img/nuoheat/hover-2.jpg', cap: 'The handle' },
+      { src: 'assets/img/nuoheat/hover-3.jpg', cap: 'Pad and handle' },
+    ],
+    sections: [
+      {
+        id: 'context', label: 'Context', title: 'Rethinking how an everyday appliance generates heat.', fn: 7,
+        body: ['Conventional dry irons heat a large soleplate, consuming energy and requiring time to reach the desired temperature. NuoHeat explores localized induction heating as an alternative, delivering heat selectively where it is needed.'],
+        note: 'Builds on Meng and Cheng (2019), who showed that induction can heat a plain metal iron through an ironing board.',
+      },
+      {
+        id: 'problem', label: 'Problem', title: 'Why heat the entire surface?',
+        quote: 'How might we reduce the energy and time required for ironing by rethinking the heating mechanism itself?',
+        body: ['The challenge was to translate localized induction heating into a functional product while balancing thermal performance, component integration, ergonomics and usability.'],
+      },
+      {
+        id: 'process', label: 'Process', title: 'From heating principle to functional prototype.', fn: 8,
+        body: ['I explored the relationship between the heating mechanism, product architecture and user interaction.'],
+        rows: [
+          ['Concept Development', 'Investigated localized induction heating as an alternative to conventional heating.', { src: 'assets/img/nuoheat/reframe.jpg', w: 1600, h: 608, alt: 'Diagram comparing a conventional iron, where heating element, thermostat and wiring are in the hand, with NuoHeat, where only a body and steel soleplate are in the hand.' }],
+          ['System Design', 'Explored coil configurations and selective coil activation.', { src: 'assets/img/nuoheat/induction.jpg', w: 1600, h: 643, alt: 'Simplified cross-section: induction coil under the board, padded cover, garment, heated steel soleplate and handle body.' }],
+          ['CAD & Product Development', 'Developed the product form and component arrangement.', { src: 'assets/img/nuoheat/studio-pad-dark.jpg', w: 1600, h: 900, alt: 'Studio render of the pad: a slim grey board with the control end and two red knobs at the narrow end.' }],
+          ['Material & Thermal Considerations', 'Examined heat transfer and material selection.', { src: 'assets/img/nuoheat/soleplate-layers.jpg', w: 1360, h: 580, alt: 'Close-up render of the handle’s layered body and steel soleplate.' }],
+          ['Prototyping & Testing', 'Built and evaluated functional prototypes to assess performance.', { src: 'assets/img/nuoheat/studio-pair-dark.jpg', w: 1600, h: 900, alt: 'Studio render of the pad and handle together on a dark backdrop.' }],
+        ],
+      },
+      {
+        id: 'solution', label: 'Solution', title: 'Localized heat. Rethought ironing.', fn: 9,
+        body: [
+          'NuoHeat is an induction-based ironing system designed around selective heating rather than continuously heating an entire soleplate.',
+          'The design integrates a localized heating mechanism, selective coil activation and a passive ironing handle into a cohesive product concept.',
+        ],
+        figs: [
+          { src: 'assets/img/nuoheat/patent-coils.jpg', w: 1600, h: 295, alt: 'Three diagrams of a coil array: coils under the handle switch on, follow it as it moves, and all switch off when it is lifted.', cap: 'Selective coil activation: the heat follows the hand.' },
+          { pair: [
+            { src: 'assets/img/nuoheat/redesign-pad.jpg', w: 1400, h: 788, alt: 'Render of the pad: grey cushion with a dark control end and two red knobs.' },
+            { src: 'assets/img/nuoheat/redesign-handle.jpg', w: 1400, h: 788, alt: 'Render of the passive handle: a red moulded loop grip on a grey body and steel soleplate.' },
+          ], cap: 'The pad and the passive handle.' },
+        ],
+        note: 'The project resulted in a published Indian patent application (202641090848 A, published 31 July 2026, not granted), on which I am a named co-inventor. Selective coil activation is proposed in the application.',
+      },
+      {
+        id: 'outcome', label: 'Outcome', title: 'Testing a different approach to everyday ironing.',
+        body: ['Prototype testing recorded approximately:'],
+        bigstats: [
+          ['75%', 'Lower energy consumption', 'Compared with a conventional dry iron in prototype testing.'],
+          ['80%', 'Shorter ironing time', 'Reported comparative prototype result.'],
+        ],
+        note: 'Test: three cotton shirts per method, ironed by one person, against a 1,100 W dry iron (45 s vs 203 s per shirt). Energy was estimated from rated power × ironing time, not metered.',
+        after: ['The project brought industrial design, engineering and functional prototyping together to explore how rethinking a product’s underlying mechanism can improve its performance.'],
+        takeaway: [
+          'Innovation can begin with questioning the mechanism, not just redesigning the form.',
+          'NuoHeat taught me to approach product design as an interconnected system of engineering, materials, ergonomics and user experience.',
+        ],
+      },
     ],
   },
   {
     slug: 'prakambanam', n: '04', title: 'Prakambanam', theme: 'ink',
-    field: 'Onam theme film', disc: 'Creative direction',
+    field: 'Onam Theme Film', disc: 'Film · Creative Direction · Editing',
     summary: 'A theme film for Onam, built on the sound, colour and rhythm of the festival.',
-    meta: [['Format', 'Theme film'], ['Occasion', 'Onam'], ['Role', 'Creative direction'], ['Also', 'Concept, script, edit']],
+    meta: [['Format', 'Theme Film'], ['Occasion', 'Onam'], ['Role', 'Creative Director'], ['Also', 'Director · Editor']],
     preview: ['Prakambanam: opening frame', 'Prakambanam: the drums', 'Prakambanam: final frame'],
     hero: { ops: [['full', 602, 'Film: 2.39:1 player, poster frame', 'Click the frame to play. Sound on.']] },
     chapters: [
@@ -191,15 +253,15 @@ export const PROJECTS = [
         ['full', 602, 'Still: final frame'],
       ] },
       { n: '06', label: 'Credits', ops: [
-        ['list', [['Creative direction', 'Anand Krishna'], ['Direction', 'Name'], ['Cinematography', 'Name'], ['Music', 'Name'], ['Edit and colour', 'Name']]],
+        ['list', [['Creative Direction · Direction · Editing', 'Anand Krishna'], ['Cinematography', 'Name'], ['Music', 'Name'], ['Colour', 'Name']]],
       ] },
     ],
   },
   {
     slug: 'the-seek', n: '05', title: 'The Seek', theme: 'ink', overlayTitle: true,
-    field: 'Ishanya ’26 theme film', disc: 'Creative direction',
+    field: 'Ishanya ’26 Theme Film', disc: 'Film · Direction · Editing',
     summary: 'The theme film for Ishanya ’26, about the search that starts before you know what you are looking for.',
-    meta: [['Format', 'Theme film'], ['Event', 'Ishanya ’26'], ['Role', 'Creative direction'], ['Also', 'Concept, storyboard, grade']],
+    meta: [['Format', 'Theme Film'], ['Event', 'Ishanya ’26'], ['Role', 'Director · Editor'], ['Team', 'Wider Creative Crew, Credited Below']],
     preview: ['The Seek: the corridor', 'The Seek: the light', 'The Seek: night shoot'],
     heroCaption: 'Hero: full-bleed still, darkest frame of the film',
     chapters: [
@@ -224,7 +286,7 @@ export const PROJECTS = [
         ['row', [[0, 4, 240, 'Still'], [4, 4, 240, 'Still', null, 120], [8, 4, 240, 'Still', null, 40]]],
       ] },
       { n: '06', label: 'Credits', ops: [
-        ['list', [['Creative direction', 'Anand Krishna'], ['Direction', 'Name'], ['Cinematography', 'Name'], ['Sound', 'Name'], ['Grade', 'Name']]],
+        ['list', [['Direction · Editing', 'Anand Krishna'], ['Creative Direction', 'Name'], ['Cinematography', 'Name'], ['Sound', 'Name'], ['Grade', 'Name']]],
       ] },
     ],
   },

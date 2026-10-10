@@ -5,7 +5,7 @@ import { hoverPreview } from './preview.js';
 document.querySelector('[data-nav]').innerHTML = nav({ ctx: 'Selected work, 2026', current: 'Work' });
 
 document.querySelector('[data-index-hook]').textContent =
-  `${FOOTNOTE_TOTAL} footnotes are hidden in these pages, from medieval medicine to Jaws.`;
+  `${FOOTNOTE_TOTAL} small facts are hidden in these pages, from medieval medicine to Jaws.`;
 
 const list = document.querySelector('[data-index]');
 list.innerHTML = PROJECTS.map((p) => `
@@ -13,7 +13,9 @@ list.innerHTML = PROJECTS.map((p) => `
     <a href="project.html?p=${p.slug}">
       <span class="row__title"><span class="row__t" style="view-transition-name:t-${p.slug}">${esc(p.title)}</span><span class="row__num">${p.n}</span></span>
       <span class="row__meta"><span class="row__field">${esc(p.field)}</span><span class="row__disc">${esc(p.disc)}</span></span>
-      <span class="row__inline">${ph(p.preview[0], '16/9')}</span>
+      <span class="row__inline">${p.hero && p.hero.src
+        ? `<img src="${p.hero.src}" alt="" loading="lazy" decoding="async">`
+        : ph(p.preview[0], '16/9')}</span>
     </a>
   </li>`).join('');
 
@@ -136,6 +138,75 @@ function playIntro() {
     .catch(() => nameEl.classList.remove('is-entering'));
 }
 
+/* ---------- Opening curtain: "Designer, engineer, filmmaker" decodes, then lifts ---------- */
+// The <html> element carries the "curtain" state class; the screen itself is .curtain-screen.
+const curtain = document.querySelector('.curtain-screen');
+
+function runCurtain(onLift) {
+  const root = document.documentElement;
+  try { sessionStorage.setItem('ak-curtain', '1'); } catch { /* plays again next time, which is fine */ }
+  // One word at a time in the same spot: each decodes in, holds, scrambles out, then the next arrives.
+  const WORDS = ['Designer', 'Engineer', 'Filmmaker'];
+  const slot = curtain.querySelector('[data-word]');
+  const POOL = 'abcdefghijklmnopqrstuvwxyz';
+  const TICK = 24;
+  const rand = (c) => { const r = POOL[Math.floor(Math.random() * POOL.length)]; return c === c.toUpperCase() ? r.toUpperCase() : r; };
+  const build = (word) => {
+    slot.textContent = '';
+    const list = [...word].map((c) => { const s = document.createElement('span'); s.className = 'cc'; s.textContent = c; slot.append(s); return { s, c }; });
+    // Lock each letter's box to its final width so the word never jitters while it scrambles.
+    list.forEach((o) => { o.s.style.width = `${o.s.getBoundingClientRect().width}px`; o.s.textContent = ''; });
+    return list;
+  };
+  const decodeIn = (list, done) => {
+    let f = 0;
+    const id = setInterval(() => {
+      f += 1;
+      list.forEach((o, k) => {
+        if (f >= k + 2) { o.s.textContent = o.c; o.s.classList.remove('is-scr'); }
+        else if (f >= k / 2) { o.s.textContent = rand(o.c); o.s.classList.add('is-scr'); }
+      });
+      if (f >= list.length + 2) { clearInterval(id); done(); }
+    }, TICK);
+  };
+  const scrambleOut = (list, done) => {
+    let f = 0;
+    const id = setInterval(() => {
+      f += 1;
+      list.forEach((o, k) => {
+        const fromEnd = list.length - 1 - k;
+        if (f >= fromEnd + 2) o.s.textContent = '';
+        else if (f >= fromEnd / 2) { o.s.textContent = rand(o.c); o.s.classList.add('is-scr'); }
+      });
+      if (f >= list.length + 2) { clearInterval(id); done(); }
+    }, TICK * 0.6);
+  };
+
+  let lifted = false;
+  const lift = () => {
+    if (lifted) return;
+    lifted = true;
+    root.classList.add('curtain-leaving');
+    setTimeout(onLift, 260); // the name starts springing while the curtain is still rising
+    setTimeout(() => { root.classList.remove('curtain', 'curtain-leaving'); curtain.remove(); }, 900);
+  };
+  const play = (i) => {
+    if (lifted) return;
+    const list = build(WORDS[i]);
+    curtain.classList.add('is-ready');
+    decodeIn(list, () => {
+      if (i === WORDS.length - 1) { setTimeout(lift, 200); return; }
+      setTimeout(() => scrambleOut(list, () => play(i + 1)), 80);
+    });
+  };
+  setTimeout(() => play(0), 40);
+  curtain.addEventListener('click', lift);
+  addEventListener('keydown', lift, { once: true });
+}
+
 initCommon({ current: 'Work' });
 // Start after the web font has loaded and the name has been sized to the page width.
-(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(playIntro));
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+  if (curtain && document.documentElement.classList.contains('curtain')) runCurtain(() => requestAnimationFrame(playIntro));
+  else { if (curtain) curtain.remove(); requestAnimationFrame(playIntro); }
+});

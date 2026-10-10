@@ -15,7 +15,7 @@ export function ph(caption, ratio, extra = '') {
 
 export function footnote(n) {
   return `<div class="fn" data-fn="${n}"><span class="fn__mark" aria-hidden="true"></span>` +
-    `<span class="fn__label">Footnote ${pad2(n)}</span><p class="fn__text">${esc(FOOTNOTES[n])}</p></div>`;
+    `<span class="fn__label">Fact ${pad2(n)}</span><p class="fn__text">${esc(FOOTNOTES[n])}</p></div>`;
 }
 
 export function nav({ ctx, current }) {
@@ -28,10 +28,31 @@ export function nav({ ctx, current }) {
   </nav>`;
 }
 
+// Tabler outline icons (MIT), 24px grid, drawn with the current text colour.
+const ICONS = {
+  mail: '<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/>',
+  linkedin: '<path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M8 11l0 5"/><path d="M8 8l0 .01"/><path d="M12 16l0 -5"/><path d="M16 16v-3a2 2 0 0 0 -4 0"/>',
+  behance: '<path d="M3 18v-12h4.5a3 3 0 0 1 0 6a3 3 0 0 1 0 6h-4.5"/><path d="M3 12l4.5 0"/><path d="M14 13h7a3.5 3.5 0 0 0 -7 0v2a3.5 3.5 0 0 0 6.64 1"/><path d="M16 6l3 0"/>',
+  'arrow-up-right': '<path d="M17 7l-10 10"/><path d="M8 7l9 0l0 9"/>',
+  'arrow-left': '<path d="M5 12l14 0"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/>',
+};
+export function icon(name, cls = 'icon') {
+  return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONS[name]}</svg>`;
+}
+
+// Profiles open in a new tab so visitors keep the portfolio open; email stays as a normal link.
+const ext = (h) => (h.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '');
+
 export function linksRow(cls = '') {
-  // Profiles open in a new tab so visitors keep the portfolio open; email stays as a normal link.
-  const ext = (h) => (h.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '');
   return LINKS.map(([l, h]) => `<a class="${cls}" href="${h}"${ext(h)}>${l}</a>`).join('');
+}
+
+// The same links as one consistent icon family. Each keeps a real name for screen readers and a tooltip.
+export function iconLinks() {
+  return LINKS.map(([l, h, ic]) => {
+    const name = l === 'Email' ? `Email ${EMAIL}` : `${l} (opens in a new tab)`;
+    return `<a class="icon-link" href="${h}"${ext(h)} aria-label="${esc(name)}" data-tip="${esc(l)}">${icon(ic)}</a>`;
+  }).join('');
 }
 
 export function footer({ note } = {}) {
@@ -44,7 +65,7 @@ export function footer({ note } = {}) {
       </button>
       <div class="footer__bottom grid">
         <span class="footer__copy">© 2026 Anand Krishna</span>
-        <div class="footer__links">${linksRow()}</div>
+        <div class="footer__icons">${iconLinks()}</div>
         <a class="footer__top" href="#top">Back to top</a>
       </div>
     </div>
@@ -88,7 +109,7 @@ function initFootnotes() {
   updateFoundCount(found.size);
 }
 function updateFoundCount(n) {
-  document.querySelectorAll('[data-fn-count]').forEach((el) => { el.textContent = `Footnotes found: ${n} of ${FOOTNOTE_TOTAL}`; });
+  document.querySelectorAll('[data-fn-count]').forEach((el) => { el.textContent = `Facts found: ${n} of ${FOOTNOTE_TOTAL}`; });
 }
 
 /* ---------- mobile menu ---------- */
@@ -99,7 +120,7 @@ function initMenu(current) {
   const items = [['Work', 'index.html#work', '5'], ['Sidequests', 'sidequests.html', '12'], ['Info', 'index.html#info', ''], ['Contact', 'index.html#contact', '']];
   d.innerHTML = `<div class="menu__top"><span class="nav__name">Anand Krishna</span><button type="button" class="menu__close" data-menu-close>Close</button></div>
     <ul class="menu__list">${items.map(([l, h, n]) => `<li><a href="${h}" class="${l === current ? 'is-current' : ''}">${l}${n ? `<sup>${n}</sup>` : ''}</a></li>`).join('')}</ul>
-    <div class="menu__foot"><p class="mute" data-fn-count></p><div class="menu__links">${linksRow()}</div></div>`;
+    <div class="menu__foot"><p class="mute" data-fn-count></p><div class="menu__links">${iconLinks()}</div></div>`;
   document.body.append(d);
   document.querySelectorAll('[data-menu-open]').forEach((b) => b.addEventListener('click', () => d.showModal()));
   d.querySelector('[data-menu-close]').addEventListener('click', () => d.close());
